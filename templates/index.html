@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News to D&D Generator</title>
+</head>
+<body>
+    <h1>🧙‍♂️ News to One-Shot Generator</h1>
+    <form id="campaign-form">
+        <label for="article">Paste a news article:</label><br>
+        <textarea id="article" rows="10" cols="80"></textarea><br><br>
+
+        <label for="tone">Choose a tone:</label>
+        <select id="tone">
+            <option value="High Fantasy">High Fantasy</option>
+            <option value="Grimdark">Grimdark</option>
+            <option value="Satirical">Satirical</option>
+        </select><br><br>
+
+        <button type="submit">Generate Campaign</button>
+    </form>
+
+    <pre id="output"></pre>
+
+    <script>
+        document.getElementById("campaign-form").onsubmit = async (e) => {
+            e.preventDefault();
+            const article = document.getElementById("article").value;
+            const tone = document.getElementById("tone").value;
+
+            const response = await fetch("/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ article, tone })
+            });
+
+            const data = await response.text();
+            document.getElementById("output").innerText = data;
+        };
+    </script>
+</body>
+</html>
