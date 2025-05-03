@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template
-import openai
+from openai import OpenAI
 import os
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
 
@@ -20,9 +20,9 @@ def generate():
 You are a Dungeon Master creating a one-shot Dungeons & Dragons campaign inspired by a real-world news article.
 
 Article Summary:
-\"\"\"
+"""
 {article}
-\"\"\"
+"""
 
 Tone: {tone}
 
@@ -40,14 +40,15 @@ Return the following in well-formatted Markdown:
 7. One Magic Item or Lore Fragment
 """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.9,
         max_tokens=1500
     )
 
-    return response.choices[0].message.content
+    result = response.choices[0].message.content
+    return result
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=True)
