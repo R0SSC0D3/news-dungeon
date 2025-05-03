@@ -20,9 +20,9 @@ def generate():
 You are a Dungeon Master creating a one-shot Dungeons & Dragons campaign inspired by a real-world news article.
 
 Article Summary:
-"""
+\"\"\"
 {article}
-"""
+\"\"\"
 
 Tone: {tone}
 
