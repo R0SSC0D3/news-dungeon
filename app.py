@@ -1,9 +1,7 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template
 from flask_cors import CORS
 from openai import OpenAI
 import os
-import requests
-import xml.etree.ElementTree as ET
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -44,7 +42,7 @@ Return the following in well-formatted Markdown:
 7. One Magic Item or Lore Fragment
 """
 
-        response = client.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.9,
@@ -53,25 +51,6 @@ Return the following in well-formatted Markdown:
 
     result = response.choices[0].message.content
     return result
-
-@app.route("/headlines")
-def headlines():
-    try:
-        feed_url = "https://feeds.npr.org/1014/rss.xml"
-        response = requests.get(feed_url)
-        response.raise_for_status()
-        root = ET.fromstring(response.content)
-        items = root.findall(".//item")
-        headlines = [
-            {
-                "title": item.find("title").text,
-                "link": item.find("link").text
-            }
-            for item in items[:10]
-        ]
-        return jsonify(headlines)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=True)
