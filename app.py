@@ -1,13 +1,10 @@
-
 from flask import Flask, request, render_template
-from flask_cors import CORS
 from openai import OpenAI
 import os
 
-app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
-CORS(app, resources={r"/*": {"origins": "*"}})
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -23,9 +20,9 @@ def generate():
 You are a Dungeon Master creating a one-shot Dungeons & Dragons campaign inspired by a real-world news article.
 
 Article Summary:
-"""
+\"\"\"
 {article}
-"""
+\"\"\"
 
 Tone: {tone}
 
