@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from openai import OpenAI
@@ -45,7 +44,7 @@ Return the following in well-formatted Markdown:
 7. One Magic Item or Lore Fragment
 """
 
-    response = client.chat.completions.create(
+        response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.9,
